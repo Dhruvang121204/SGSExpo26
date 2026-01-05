@@ -1,0 +1,130 @@
+﻿@model SGSExpo26.Models.BookingViewModel
+
+<div style="display:flex; justify-content:center; padding:0 16px;">
+    <div style="background:#fff; width:100%; max-width:420px; padding:30px;
+                border-radius:16px; box-shadow:0 10px 25px rgba(0,0,0,.08);">
+
+        <form method="post" id="bookingForm">
+
+            <!-- Name -->
+            <label><b>Full Name *</b></label>
+            <input name="Booking.Name" required
+                   placeholder="Enter your full name"
+                   style="width:100%;padding:12px;margin:6px 0 18px;
+                   border-radius:10px;border:1px solid #ddd;" />
+
+            <!-- Mobile -->
+            <label><b>Mobile Number *</b></label>
+            <div style="display:flex;gap:10px;margin-top:6px;">
+                <input value="+91" disabled
+                       style="width:60px;padding:12px;
+                       border-radius:10px;border:1px solid #ddd;background:#f3f4f6;" />
+
+                <input id="mobileInput" name="Booking.Mobile"
+                       maxlength="10" inputmode="numeric" required
+                       placeholder="Enter 10-digit number"
+                       style="flex:1;padding:12px;border-radius:10px;border:1px solid #ddd;" />
+            </div>
+
+            <!-- Persons -->
+            <label style="margin-top:18px;"><b>Number of Persons *</b></label>
+            <select name="Booking.Persons" required
+                    style="width:100%;padding:12px;margin-top:6px;
+                          border-radius:10px;border:1px solid #ddd;">
+                <option value="">Select number of persons</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+            </select>
+
+
+            <div id="capacityWarning"
+                 style="color:red;font-size:14px;margin:6px 0;display:none;"></div>
+
+            <!-- Slot -->
+            <label><b>Select Time Slot *</b></label>
+            <select name="Booking.SlotId" required
+                    style="width:100%;padding:12px;margin-top:6px;
+               border-radius:10px;border:1px solid #ddd;">
+                <option value="">Choose a time slot</option>
+
+                @foreach (var slot in Model.Slots)
+                {
+                    var remaining = slot.MaxCapacity - slot.CurrentCapacity;
+                    bool isFull = remaining <= 0;
+
+                    <option value="@slot.Id"
+                            data-available="@remaining"
+                            disabled="@(isFull ? "disabled" : null)">
+                        @slot.SlotText
+                        @(isFull ? "(Full)" : $"(Available: {remaining})")
+                    </option>
+                }
+            </select>
+
+
+            <!-- Submit -->
+            <button id="confirmBtn" type="submit" disabled
+                    style="width:100%;padding:14px;margin-top:25px;
+                    background:linear-gradient(to right,#fde68a,#fdba74);
+                    border:none;border-radius:14px;
+                    font-size:16px;font-weight:600;
+                    cursor:not-allowed;opacity:.7;">
+                ✔ Confirm Registration
+            </button>
+
+        </form>
+    </div>
+</div>
+
+<script>
+    const nameInput = document.querySelector('[name="Booking.Name"]');
+    const mobileInput = document.getElementById("mobileInput");
+    const personsInput = document.querySelector('[name="Booking.Persons"]');
+    const slotSelect = document.querySelector('[name="Booking.SlotId"]');
+    const confirmBtn = document.getElementById("confirmBtn");
+    const warning = document.getElementById("capacityWarning");
+
+    const isMobileValid = () => /^[0-9]{10}$/.test(mobileInput.value);
+
+    function validateForm() {
+        let valid = true;
+        warning.style.display = "none";
+
+        if (!nameInput.value.trim()) valid = false;
+        if (!isMobileValid()) valid = false;
+        if (!personsInput.value || personsInput.value <= 0) valid = false;
+        if (!slotSelect.value) valid = false;
+
+            if (slotSelect.value) {
+        const opt = slotSelect.options[slotSelect.selectedIndex];
+        const available = parseInt(opt.dataset.available || 0);
+        const persons = parseInt(personsInput.value || 0);
+
+        if (available === 0) {
+            warning.innerText = "This slot is full. Please select another slot.";
+            warning.style.display = "block";
+            valid = false;
+        }
+        else if (persons > available) {
+            warning.innerText = `Only ${available} seats are available in this slot.`;
+            warning.style.display = "block";
+            valid = false;
+        }
+    }
+
+
+        confirmBtn.disabled = !valid;
+        confirmBtn.style.background = valid ? "#f97316" : "linear-gradient(to right,#fde68a,#fdba74)";
+        confirmBtn.style.cursor = valid ? "pointer" : "not-allowed";
+        confirmBtn.style.opacity = valid ? "1" : ".7";
+    }
+
+    [nameInput, mobileInput, personsInput, slotSelect].forEach(e => {
+        e.addEventListener("input", validateForm);
+        e.addEventListener("change", validateForm);
+    });
+</script>
