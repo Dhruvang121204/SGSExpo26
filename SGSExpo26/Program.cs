@@ -4,12 +4,12 @@ using SGSExpo26.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 // 🔹 Railway PORT support (CRITICAL)
-builder.WebHost.ConfigureKestrel(options =>
-{
-    options.ListenAnyIP(
-        int.Parse(Environment.GetEnvironmentVariable("PORT") ?? "5000")
-    );
-});
+//builder.WebHost.ConfigureKestrel(options =>
+//{
+//    options.ListenAnyIP(
+//        int.Parse(Environment.GetEnvironmentVariable("PORT") ?? "5000")
+//    );
+//});
 
 // 🔹 Services
 builder.Services.AddSingleton<MongoDbContext>();
