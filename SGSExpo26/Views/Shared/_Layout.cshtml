@@ -15,6 +15,22 @@
 
     <!-- COMMON BUTTON STYLE -->
     <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            background: #fff7ed; /* SAME FOR ALL PAGES */
+        }
+
+        .page-body {
+            flex: 1; /* fills remaining space */
+            background: #fff7ed; /* 👈 SAME COLOR */
+            padding-bottom: 20px; /* prevents footer stick */
+        }
         .btn-red {
             background-color: #dc2626; /* RED */
             color: #ffffff; /* WHITE TEXT */
@@ -221,7 +237,9 @@
 
     <!-- PAGE CONTENT -->
     <main style="flex:1;">
-        @RenderBody()
+        <div class="page-body">
+            @RenderBody()
+        </div>
     </main>
 
 
