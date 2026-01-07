@@ -1,42 +1,14 @@
 ﻿@model SGSExpo26.Models.Booking
+
 <style>
-    .whatsapp-btn {
-        width: 100%;
-        background: #25D366;
-        color: #ffffff;
-        border: none;
-        border-radius: 14px;
-        padding: 16px 18px;
-        font-size: 16px;
-        font-weight: 600;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        line-height: 1.2;
-        white-space: nowrap;
-        margin-bottom: 16px;
+    /* DISABLED STATE */
+    .disabled-btn {
+        pointer-events: none;
+        opacity: 0.5;
+        cursor: not-allowed;
     }
+</style>
 
-    @@media (max-width: 768px) {
-
-        .whatsapp-btn {
-            padding: 12px 14px; /* reduce height */
-            font-size: 14px; /* smaller text */
-            gap: 8px; /* reduce icon gap */
-        }
-
-            .whatsapp-btn .wa-text {
-                font-size: 18px;
-                white-space: nowrap; /* force single line */
-                line-height: 1.1; /* tighter vertical spacing */
-            }
-
-            .whatsapp-btn .wa-icon {
-                font-size: 16px; /* keep icon proportional */
-            }
-    }</style>
 <div style="
     background-color:#fff7ed;
     min-height:auto;
@@ -47,32 +19,24 @@
     margin-bottom:0;
 ">
 
-
     <div style="width:100%; max-width:420px; text-align:center;">
 
         <!-- TITLE -->
-        <div style="
-            font-size:24px;
-            font-weight:700;
-            margin-bottom:6px;
-        ">
+        <div style="font-size:24px; font-weight:700; margin-bottom:6px;">
             Booking Successful 🎉
         </div>
 
-        <div style="
-            font-size:14px;
-            color:#555;
-            margin-bottom:16px;
-        ">
+        <div style="font-size:14px; color:#555; margin-bottom:16px;">
             Your slot has been booked successfully.
         </div>
-        <!-- SEND WHATSAPP -->
-        <button onclick="sendOnWhatsApp()" class="btn-red btn-gap-bottom">
-            <i class="fa-brands fa-whatsapp" style="font-size:24px;"></i>
+
+        <!-- ✅ WHATSAPP BUTTON -->
+        <button id="whatsappBtn"
+                onclick="confirmOnWhatsApp()"
+                class="btn-red btn-gap-bottom">
+            <i class="fa-brands fa-whatsapp" style="font-size:22px;"></i>
             Click to confirm on WhatsApp
         </button>
-
-
 
         <!-- DETAILS CARD -->
         <div style="
@@ -107,54 +71,46 @@
             </div>
         </div>
 
-        
-
-        <!-- BOOK AGAIN -->
+        <!-- ✅ BOOK AGAIN (DISABLED INITIALLY) -->
         <div style="margin-top:18px; margin-bottom:18px;">
-            <a href="/Booking/Index" class="btn-red btn-same-size">
+            <a id="bookAgainBtn"
+               href="/Booking/Index"
+               class="btn-red btn-same-size disabled-btn"
+               aria-disabled="true">
                 🔁 Book Another Slot
             </a>
-
         </div>
-
 
     </div>
 </div>
 
 <script>
-        function sendOnWhatsApp() {
+    function confirmOnWhatsApp() {
 
-            const name = "@Model.Name";
-            const mobile = "@Model.Mobile";   // ONLY 10 digits
-            const persons = "@Model.Persons";
-            const slot = "@Model.SlotText";
+        const name = "@Model.Name";
+        const mobile = "@Model.Mobile";
+        const persons = "@Model.Persons";
+        const slot = "@Model.SlotText";
 
-            // ❌ NO indentation, ❌ NO extra spaces
-            const message =
-    "*My Booking Details*\n\n" +
-    "*SGS Jainism Park, Expo 2026, Vadodara*\n\n" +
-    "*Name:* " + name + "\n" +
-    "*Mobile:* " + mobile + "\n" +
-    "*Persons:* " + persons + "\n" +
-    "*Time Slot:* " + slot + "\n\n" +
-    "We will visit the exhibition on 1st Feb, 2026 (Sunday) and make entry between " + slot + ".\n\n" +
-    "Please confirm our booking.";
+        const message =
+            "*My Booking Details*\n\n" +
+            "*SGS Jainism Park, Expo 2026, Vadodara*\n\n" +
+            "*Name:* " + name + "\n" +
+            "*Mobile:* " + mobile + "\n" +
+            "*Persons:* " + persons + "\n" +
+            "*Time Slot:* " + slot + "\n\n" +
+            "Please confirm our booking.";
 
-            const phoneNumber = "917600066346"; // 🔴 YOUR WhatsApp number
+        const phoneNumber = "917600066346";
+        const url = "https://wa.me/" + phoneNumber + "?text=" + encodeURIComponent(message);
 
-            const url =
-                "https://wa.me/" +
-                phoneNumber +
-                "?text=" +
-                encodeURIComponent(message);
+        window.open(url, "_blank");
 
-            window.open(url, "_blank");
-
-            // Enable Book Again
-            const btn = document.getElementById("bookAgainBtn");
-            btn.style.opacity = "1";
-            btn.style.pointerEvents = "auto";
-            btn.style.cursor = "pointer";
-            btn.style.background = "#f97316";
-        }
+        /* ✅ ENABLE BOOK AGAIN BUTTON */
+        const bookAgainBtn = document.getElementById("bookAgainBtn");
+        bookAgainBtn.classList.remove("disabled-btn");
+        bookAgainBtn.removeAttribute("aria-disabled");
+        bookAgainBtn.style.pointerEvents = "auto";
+        bookAgainBtn.style.opacity = "1";
+    }
 </script>
