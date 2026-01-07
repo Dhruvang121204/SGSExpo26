@@ -1,24 +1,78 @@
 ﻿@model SGSExpo26.Models.Booking
+<style>
+    .whatsapp-btn {
+        width: 100%;
+        background: #25D366;
+        color: #ffffff;
+        border: none;
+        border-radius: 14px;
+        padding: 16px 18px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        line-height: 1.2;
+        white-space: nowrap;
+        margin-bottom: 16px;
+    }
 
+    @@media (max-width: 768px) {
+
+        .whatsapp-btn {
+            padding: 12px 14px; /* reduce height */
+            font-size: 14px; /* smaller text */
+            gap: 8px; /* reduce icon gap */
+        }
+
+            .whatsapp-btn .wa-text {
+                font-size: 18px;
+                white-space: nowrap; /* force single line */
+                line-height: 1.1; /* tighter vertical spacing */
+            }
+
+            .whatsapp-btn .wa-icon {
+                font-size: 16px; /* keep icon proportional */
+            }
+    }</style>
 <div style="
     background-color:#fff7ed;
-    min-height:100vh;
+    min-height:auto;
     display:flex;
     justify-content:center;
-    padding:50px 12px;
-    box-sizing:border-box;
+    align-items:flex-start;
+    padding:20px 16px 0;
+    margin-bottom:0;
 ">
+
 
     <div style="width:100%; max-width:420px; text-align:center;">
 
         <!-- TITLE -->
-        <div style="font-size:30px; font-weight:700; margin-bottom:6px;">
+        <div style="
+            font-size:24px;
+            font-weight:700;
+            margin-bottom:6px;
+        ">
             Booking Successful 🎉
         </div>
 
-        <div style="font-size:15px; color:#555; margin-bottom:26px;">
+        <div style="
+            font-size:14px;
+            color:#555;
+            margin-bottom:16px;
+        ">
             Your slot has been booked successfully.
         </div>
+        <!-- SEND WHATSAPP -->
+        <button onclick="sendOnWhatsApp()" class="btn-red btn-gap-bottom">
+            <i class="fa-brands fa-whatsapp" style="font-size:24px;"></i>
+            Click to confirm on WhatsApp
+        </button>
+
+
 
         <!-- DETAILS CARD -->
         <div style="
@@ -53,52 +107,16 @@
             </div>
         </div>
 
-        <!-- SEND WHATSAPP -->
-        <button type="button"
-                onclick="sendOnWhatsApp()"
-                style="
-                    width:100%;
-                    height:52px;
-                    background:#25D366;
-                    color:#ffffff;
-                    border:none;
-                    border-radius:14px;
-                    font-size:16px;
-                    font-weight:600;
-                    cursor:pointer;
-                    display:flex;
-                    align-items:center;
-                    justify-content:center;
-                    gap:10px;
-                    margin-bottom:16px;
-                ">
-            <span style="font-size:18px;">📤</span>
-            Send Details on WhatsApp
-        </button>
+        
 
         <!-- BOOK AGAIN -->
-        <a id="bookAgainBtn"
-           href="/Booking/Index"
-           style="
-                width:100%;
-                height:52px;
-                display:flex;
-                align-items:center;
-                justify-content:center;
-                gap:10px;
-                background:#fdba74;
-                color:#ffffff;
-                text-decoration:none;
-                border-radius:14px;
-                font-size:16px;
-                font-weight:600;
-                opacity:0.6;
-                pointer-events:none;
-                cursor:not-allowed;
-           ">
-            <span style="font-size:18px;">🔁</span>
-            Book Another Slot
-        </a>
+        <div style="margin-top:18px; margin-bottom:18px;">
+            <a href="/Booking/Index" class="btn-red btn-same-size">
+                🔁 Book Another Slot
+            </a>
+
+        </div>
+
 
     </div>
 </div>

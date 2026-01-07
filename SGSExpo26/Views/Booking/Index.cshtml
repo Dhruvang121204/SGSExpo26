@@ -45,7 +45,7 @@
                  style="color:red;font-size:14px;margin:6px 0;display:none;"></div>
 
             <!-- Slot -->
-            <label><b>Select Time Slot *</b></label>
+            <label><b>Select Time Slot for 1st Feb *</b></label>
             <select name="Booking.SlotId" required
                     style="width:100%;padding:12px;margin-top:6px;
                border-radius:10px;border:1px solid #ddd;">
@@ -60,21 +60,18 @@
                             data-available="@remaining"
                             disabled="@(isFull ? "disabled" : null)">
                         @slot.SlotText
-                        @(isFull ? "(Full)" : $"(Available: {remaining})")
+                        @(isFull ? "(Full)" : $"({remaining} seats available)")
                     </option>
                 }
             </select>
 
 
             <!-- Submit -->
-            <button id="confirmBtn" type="submit" disabled
-                    style="width:100%;padding:14px;margin-top:25px;
-                    background:linear-gradient(to right,#fde68a,#fdba74);
-                    border:none;border-radius:14px;
-                    font-size:16px;font-weight:600;
-                    cursor:not-allowed;opacity:.7;">
+            <button type="submit" class="btn-red btn-gap-top">
                 ✔ Confirm Registration
             </button>
+
+
 
         </form>
     </div>
